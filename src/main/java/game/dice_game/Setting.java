@@ -4,6 +4,6 @@ import java.awt.*;
 
 public class Setting {
   
-  final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
-  final int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
+  final static int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
+  final static int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
 }
