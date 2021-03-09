@@ -3,6 +3,7 @@ package game.dice_game;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.awt.Container;
 // import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -10,8 +11,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.Timer;
+// import java.awt.BorderLayout;
 
 @SpringBootApplication
 public class DiceGameApplication extends JFrame implements KeyListener, ActionListener {
@@ -19,6 +23,8 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
 	private static final long serialVersionUID = 1L;
 
 	DiceArray diceArray = new DiceArray();
+
+	PointList PointList = new PointList();
 
 
 // 球的初始位置
@@ -57,22 +63,18 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
 	int[] playerScore = new int[PLAYER_NUM];
 
 	public DiceGameApplication() {
-				setTitle("骰子遊戲");
-				setSize(Setting.SCREEN_WIDTH, Setting.SCREEN_HEIGHT);
-				setResizable(true);
-				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				setLocationRelativeTo(null);
-				setLayout(null);
-				add(DiceArray.DiceArray[0]);
-				add(DiceArray.DiceArray[1]);
-				add(DiceArray.DiceArray[2]);
-				add(DiceArray.DiceArray[3]);
-				add(DiceArray.DiceArray[4]);
-				// addKeyListener(this);
-
-				// initPlayerPos();
-				// initPlayerScore();
-				// initBallTimer();
+		setTitle("骰子遊戲");
+		setSize(Setting.SCREEN_WIDTH, Setting.SCREEN_HEIGHT);
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		setLayout(null);
+		add(PointList.PointList);
+		
+		addKeyListener(this);
+		// initPlayerPos();
+		// initPlayerScore();
+		// initBallTimer();
 	}
 
 
@@ -103,16 +105,15 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
 		// } 
 
 		public void paint(Graphics g) { 
-				super.paint(g);
-				DiceArray.drawSelectedDice(g);
-				for(int i = 0 ; i<5 ; i++){
-					DiceArray.DiceArray[i].drawDice(g);
-				}
+			super.paint(g);
+			DiceArray.drawSelectedDice(g);
+			for(int i = 0 ; i<DiceArray.DiceArray.length ; i++){
+				DiceArray.DiceArray[i].drawDice(g);
+			}
 		}
 
 		public static void main(String[] args) {
 			SpringApplication.run(DiceGameApplication.class, args);
-
 			new DiceGameApplication().setVisible(true);
 		}
 
@@ -134,32 +135,54 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
+		switch (key) {
+			case KeyEvent.VK_W:
+				DiceArray.selectedDice(0);
+				break;
+			case KeyEvent.VK_E:
+				DiceArray.selectedDice(1);
+				break;
+			case KeyEvent.VK_A:
+				DiceArray.selectedDice(2);
+				break;
+			case KeyEvent.VK_S:
+				DiceArray.selectedDice(3);
+				break;
+			case KeyEvent.VK_D:
+				DiceArray.selectedDice(4);
+				break;
+			case KeyEvent.VK_F1:
+				DiceArray.cancelSelectedDice(0);
+				break;
+			case KeyEvent.VK_F2:
+				DiceArray.cancelSelectedDice(1);
+				break;
+			case KeyEvent.VK_F3:
+				DiceArray.cancelSelectedDice(2);
+				break;
+			case KeyEvent.VK_F4:
+				DiceArray.cancelSelectedDice(3);
+				break;
+			case KeyEvent.VK_F5:
+				DiceArray.cancelSelectedDice(4);
+				break;
+			case KeyEvent.VK_SPACE:
+				DiceArray.rollRemainDice();
+				break;
+			default:
+				break;
+		}
 
-		// Move the player on the left
-		if( key == KeyEvent.VK_UP )
-			playerPosY[0] -= playerSpeedY;
-
-		if( key == KeyEvent.VK_DOWN )
-			playerPosY[0] += playerSpeedY;
-
-		// Move the player on the right
-		if( key == KeyEvent.VK_W )
-			playerPosY[1] -= playerSpeedY;
-
-		if( key == KeyEvent.VK_X )
-			playerPosY[1] += playerSpeedY;
-
-		checkPadPosRange();
 		repaint();
 	}
 
 	// 檢查板子是否超出遊戲畫面的範圍
-	private void checkPadPosRange() {
-		for(int i = 0; i < PLAYER_NUM; i++) {
-			if( playerPosY[i] < 0)	playerPosY[i] = 0;
-			if( playerPosY[i] > Setting.SCREEN_HEIGHT - PAD_HEIGHT) playerPosY[i] = Setting.SCREEN_HEIGHT - PAD_HEIGHT;
-		}
-	}
+	// private void checkPadPosRange() {
+	// 	for(int i = 0; i < PLAYER_NUM; i++) {
+	// 		if( playerPosY[i] < 0)	playerPosY[i] = 0;
+	// 		if( playerPosY[i] > Setting.SCREEN_HEIGHT - PAD_HEIGHT) playerPosY[i] = Setting.SCREEN_HEIGHT - PAD_HEIGHT;
+	// 	}
+	// }
 
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -200,5 +223,4 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
 
 			this.repaint();
 	}
-
 }
