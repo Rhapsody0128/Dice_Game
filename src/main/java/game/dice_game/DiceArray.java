@@ -16,6 +16,7 @@ public class DiceArray {
       DiceArray[i] = new Dice(i);
     }
   }
+  
   public static void drawSelectedDice(Graphics g){
     g.setColor(new Color(0, 0, 0));
     for(int i = 0 ; i<5 ; i++){
@@ -28,6 +29,7 @@ public class DiceArray {
     DiceArray[index].selected = true;
     DiceArray[index].selectDice();
   }
+
   public static void cancelSelectedDice(int index){
     SelectedDice[index] = null;
     DiceArray[index].selected = false;
