@@ -1,15 +1,14 @@
 package game.dice_game;
 
-import java.awt.Dimension;
+import java.awt.Font;
 import java.util.Arrays;
 
-import javax.swing.*;
-import javax.swing.JPanel;
 // import java.awt.BorderLayout;
+import javax.swing.*;
 
 enum DiceType{
   None,
-  Ones,
+  Aces,
   Twos,
   Threes,
   Fours,
@@ -27,21 +26,82 @@ enum DiceType{
 public class PointList extends JPanel{
 
   private static final long serialVersionUID = 1L;
-
-  public JPanel PointList = new JPanel();
   
   public PointList(){
     
-    showButton();
+    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    createButton();
+    
   }
-  public void showButton(){
-    JButton Ones = new JButton("點數一");
-    Ones.setPreferredSize(new Dimension(100, 100));
-    Ones.setSize(300, 300);
-    PointList.add(Ones);
-    Ones.setLocation(0,0);
-    judge();
+  
+  public void createButton(){
+    this.removeAll();
+    for (int i =1; i<DiceType.values().length ;i++) {
+      String key = "";
+      switch (DiceType.values()[i]) {
+        case Aces:
+          key = "點數一";
+          break;
+        case Twos:
+          key = "點數二";
+          break;
+        case Threes:
+          key = "點數三";
+          break;
+        case Fours:
+          key = "點數四";
+          break;
+        case Fives:
+          key = "點數五";
+          break;
+        case Sixes:
+          key = "點數六";
+          break;
+        case ThreeOfAKind: 
+          key = "三條";
+          break;
+        case FourOfAKind:
+          key = "四條";
+          break;
+        case SmallStraight:
+          key = "小順";
+          break;
+        case LargeStraight:
+          key = "大順";
+          break;
+        case Chance:
+          key = "機會";
+          break;
+        case FullHouse:
+          key = "葫蘆";
+          break;
+        case Yahtzee:
+          key = "壓死";
+          break;
+        default:
+          break;
+
+        }
+        JLabel label = new JLabel("這次結果將獲得"+ computeScore(i) +"點");
+        label.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
+        JButton button = new JButton(key);
+        button.setFont(new Font("微軟正黑體", Font.PLAIN, 30));
+        button.setEnabled(false);
+        for(DiceType judgeType : judge()){
+          if(judgeType!=null){
+            if(judgeType == DiceType.values()[i]){
+              button.setEnabled(true);
+            }
+          }
+        }
+        this.add(button);
+        this.add(label);
+      
+    }
+    revalidate();
   }
+
+
   private DiceType[] judge(){
     DiceType[] Type = new DiceType[14];
 
@@ -56,7 +116,7 @@ public class PointList extends JPanel{
       for(int i = 0 ;i<DicePoint.length;i++){
         switch (DicePoint[i]) {
           case 1:
-            Type[0] = DiceType.Ones;
+            Type[0] = DiceType.Aces;
             combo[0]++;
             break;
           case 2:
@@ -125,51 +185,79 @@ public class PointList extends JPanel{
     }
   }
 
-  private int computeScore(int index,int[] DicePoint){
+  private int computeScore(int index){
+    int[] DicePoint = new int[5];
+      for(int i = 0 ;i<DiceArray.DiceArray.length;i++){
+        DicePoint[i] = DiceArray.DiceArray[i].DICE_NUMBER;
+      }
+      Arrays.sort(DicePoint);
     int score = 0;
     switch (index) {
       case 1:
         for(int Point : DicePoint){
-          if(Point==index){
-            score += index;
+          if(Point==1){
+            score += Point;
           }
         }
         return score;    
       case 2:
         for(int Point : DicePoint){
-          if(Point==index){
-            score += index;
+          if(Point==2){
+            score += Point;
           }
         }
         return score;    
       case 3:
         for(int Point : DicePoint){
-          if(Point==index){
-            score += index;
+          if(Point==3){
+            score += Point;
           }
         }
         return score;    
       case 4:
         for(int Point : DicePoint){
-          if(Point==index){
-            score += index;
+          if(Point==4){
+            score += Point;
           }
         }
         return score;    
       case 5:
         for(int Point : DicePoint){
-          if(Point==index){
-            score += index;
+          if(Point==5){
+            score += Point;
           }
         }
         return score;    
       case 6:
         for(int Point : DicePoint){
-          if(Point==index){
-            score += index;
+          if(Point==6){
+            score += Point;
           }
         }
         return score;    
+      case 7:
+        for(int Point : DicePoint){
+          score += Point;
+        }
+      case 8:
+        for(int Point : DicePoint){
+          score += Point;
+        }
+      case 9:
+        score = 30;
+      case 10:
+        score = 40;
+        return score; 
+      case 11:
+        for(int Point : DicePoint){
+          score += Point;
+        }
+      case 12:
+        score = 25;
+        return score; 
+      case 13:
+        score = 50;
+        return score; 
       default:
         return score;
     }

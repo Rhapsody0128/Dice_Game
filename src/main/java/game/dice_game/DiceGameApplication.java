@@ -12,7 +12,8 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.Timer;
-// import java.awt.BorderLayout;
+
+import java.awt.BorderLayout;
 
 @SpringBootApplication
 public class DiceGameApplication extends JFrame implements KeyListener, ActionListener {
@@ -59,15 +60,17 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
 	// 玩家分數
 	int[] playerScore = new int[PLAYER_NUM];
 
+	PointList PointListz = new PointList();
+
 	public DiceGameApplication() {
 		setTitle("骰子遊戲");
 		setSize(Setting.SCREEN_WIDTH, Setting.SCREEN_HEIGHT);
 		setResizable(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-		setLayout(null);
+		
+		add(PointListz,BorderLayout.LINE_START);
 
-		// add(PointList.PointList);
 		
 		addKeyListener(this);
 		// initPlayerPos();
@@ -108,12 +111,14 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
 			for(int i = 0 ; i<DiceArray.DiceArray.length ; i++){
 				DiceArray.DiceArray[i].drawDice(g);
 			}
-			PointList.showButton();
+			PointListz.createButton();
 		}
 
 		public static void main(String[] args) {
 			SpringApplication.run(DiceGameApplication.class, args);
-			new DiceGameApplication().setVisible(true);
+			DiceGameApplication App = new DiceGameApplication();
+			App.setFocusable(true);
+			App.setVisible(true);
 		}
 
 
@@ -133,6 +138,7 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		this.requestFocus();
 		int key = e.getKeyCode();
 		switch (key) {
 			case KeyEvent.VK_W:
@@ -193,6 +199,7 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		this.requestFocus();
 		ballPosX += ballSpeedX;
 		ballPosY += ballSpeedY;
 
