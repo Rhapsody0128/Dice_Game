@@ -44,19 +44,19 @@ public class Dice {
     if(selected){
       switch (DICE_INDEX) {
         case 0:
-          setPosition(Setting.SCREEN_WIDTH*2/5+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
+          setPosition(Setting.SCREEN_WIDTH*3/8+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
           break;
         case 1:
-          setPosition(Setting.SCREEN_WIDTH*2/5+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
+          setPosition(Setting.SCREEN_WIDTH*3/8+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
           break;
         case 2:
-          setPosition(Setting.SCREEN_WIDTH*2/5+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
+          setPosition(Setting.SCREEN_WIDTH*3/8+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
           break;
         case 3:
-          setPosition(Setting.SCREEN_WIDTH*2/5+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
+          setPosition(Setting.SCREEN_WIDTH*3/8+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
           break;
         case 4:
-          setPosition(Setting.SCREEN_WIDTH*2/5+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
+          setPosition(Setting.SCREEN_WIDTH*3/8+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
           break;
       }
     }

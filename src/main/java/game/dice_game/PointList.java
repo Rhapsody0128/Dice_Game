@@ -6,6 +6,9 @@ import java.util.Arrays;
 // import java.awt.BorderLayout;
 import javax.swing.*;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 enum DiceType{
   None,
   Aces,
@@ -26,84 +29,90 @@ enum DiceType{
 public class PointList extends JPanel{
 
   private static final long serialVersionUID = 1L;
+
+  JButton[] AllButton = new JButton[DiceType.values().length];
   
+  DiceType[] selectedType = new DiceType[DiceType.values().length];
+
   public PointList(){
     
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     createButton();
-    
+    setButton();
   }
   
   public void createButton(){
-    this.removeAll();
-    for (int i =1; i<DiceType.values().length ;i++) {
-      String key = "";
-      switch (DiceType.values()[i]) {
-        case Aces:
-          key = "點數一";
-          break;
-        case Twos:
-          key = "點數二";
-          break;
-        case Threes:
-          key = "點數三";
-          break;
-        case Fours:
-          key = "點數四";
-          break;
-        case Fives:
-          key = "點數五";
-          break;
-        case Sixes:
-          key = "點數六";
-          break;
-        case ThreeOfAKind: 
-          key = "三條";
-          break;
-        case FourOfAKind:
-          key = "四條";
-          break;
-        case SmallStraight:
-          key = "小順";
-          break;
-        case LargeStraight:
-          key = "大順";
-          break;
-        case Chance:
-          key = "機會";
-          break;
-        case FullHouse:
-          key = "葫蘆";
-          break;
-        case Yahtzee:
-          key = "壓死";
-          break;
-        default:
-          break;
+    for (int i =0; i<DiceType.values().length ;i++) {
 
-        }
-        JLabel label = new JLabel("這次結果將獲得"+ computeScore(i) +"點");
-        label.setFont(new Font("微軟正黑體", Font.PLAIN, 18));
-        JButton button = new JButton(key);
-        button.setFont(new Font("微軟正黑體", Font.PLAIN, 30));
+        JButton button = new JButton("<html><p style='text-align: center'>"+DiceTypeToChinese(DiceType.values()[i])+"</p></html>");
+        button.setFont(new Font("微軟正黑體", Font.PLAIN, 23));
+        button.setAlignmentX(CENTER_ALIGNMENT);
         button.setEnabled(false);
-        for(DiceType judgeType : judge()){
-          if(judgeType!=null){
-            if(judgeType == DiceType.values()[i]){
-              button.setEnabled(true);
-            }
-          }
-        }
+        setAction(button,i);
+
         this.add(button);
-        this.add(label);
-      
+        AllButton[i] = button;
     }
-    revalidate();
+    setButton();
+  }
+  private String DiceTypeToChinese(DiceType Type){
+      switch (Type) {
+        case None:
+          return "放棄";
+        case Aces:
+          return "點數一";
+        case Twos:
+          return "點數二";
+        case Threes:
+          return "點數三";
+        case Fours:
+          return "點數四";
+        case Fives:
+          return "點數五";
+        case Sixes:
+          return "點數六";
+        case ThreeOfAKind: 
+          return "三條" ;
+        case FourOfAKind:
+          return "四條" ;
+        case SmallStraight:
+          return "小順" ;
+        case LargeStraight:
+          return "大順" ;
+        case Chance:
+          return "機會" ;
+        case FullHouse:
+          return "葫蘆" ;
+        case Yahtzee:
+          return "壓死" ;
+        default:
+          return "";
+        }
   }
 
+  public void setButton(){
+      for(int i = 0; i<DiceType.values().length ;i++){
+        if(i==0){
+          AllButton[i].setEnabled(true);
+          AllButton[i].setText("<html><p style='text-align: center'>"+DiceTypeToChinese(DiceType.values()[i])+"<br>跳過本次回合</html>");
+        }else{
+          if(judge()[i]!=null){
+            AllButton[i].setEnabled(true);
+            AllButton[i].setText("<html><p style='text-align: center'>"+DiceTypeToChinese(DiceType.values()[i])+"<br>將可獲得"+computeScore(i)+"點</p></html>");
+          }else{
+            AllButton[i].setEnabled(false);
+            AllButton[i].setText("<html><p style='text-align: center'>"+DiceTypeToChinese(DiceType.values()[i])+"</p></html>");
+          }
+          if(selectedType[i]!=null){ 
+            AllButton[i].setEnabled(false);
+            AllButton[i].setText("<html><p style='text-align: center'>"+DiceTypeToChinese(DiceType.values()[i])+"<br>已使用</p></html>");
+          }
+        }
+      }   
+  }
 
   private DiceType[] judge(){
-    DiceType[] Type = new DiceType[14];
+    DiceType[] Type = new DiceType[DiceType.values().length];
 
     try{
       int[] DicePoint = new int[5];
@@ -113,30 +122,33 @@ public class PointList extends JPanel{
       Arrays.sort(DicePoint);
       int[] combo = new int[6];
       int connect = 0;      
+
+      Type[11] = DiceType.Chance;
+      Type[0] = DiceType.None;
       for(int i = 0 ;i<DicePoint.length;i++){
         switch (DicePoint[i]) {
           case 1:
-            Type[0] = DiceType.Aces;
+            Type[1] = DiceType.Aces;
             combo[0]++;
             break;
           case 2:
-            Type[1] = DiceType.Twos;
+            Type[2] = DiceType.Twos;
             combo[1]++;
             break;
           case 3:
-            Type[2] = DiceType.Threes;
+            Type[3] = DiceType.Threes;
             combo[2]++;
             break;
           case 4:
-            Type[3] = DiceType.Fours;
+            Type[4] = DiceType.Fours;
             combo[3]++;
             break;
           case 5:
-            Type[4] = DiceType.Fives;
+            Type[5] = DiceType.Fives;
             combo[4]++;
             break;
           case 6:
-            Type[5] = DiceType.Sixes;
+            Type[6] = DiceType.Sixes;
             combo[5]++;
             break;
           default:
@@ -155,25 +167,26 @@ public class PointList extends JPanel{
           Type[10] = DiceType.LargeStraight;
         }
       }
-
-
       for(int comboCount : combo){
         switch (comboCount) {
           case 3:
-            Type[6] = DiceType.ThreeOfAKind;
+            Type[7] = DiceType.ThreeOfAKind;
             for(int fullHouseCombo : combo){
               if(fullHouseCombo == 2) {
-                Type[8] = DiceType.FullHouse;
+                Type[12] = DiceType.FullHouse;
               }
             }
             break;
           case 4:
-            Type[6] = DiceType.ThreeOfAKind;
-            Type[7] = DiceType.FourOfAKind;
-          case 5 :
-            Type[6] = DiceType.ThreeOfAKind;
-            Type[7] = DiceType.FourOfAKind;
-            Type[11] = DiceType.Yahtzee;
+            Type[7] = DiceType.ThreeOfAKind;
+            Type[8] = DiceType.FourOfAKind;
+            break;
+          case 5:
+            Type[7] = DiceType.ThreeOfAKind;
+            Type[8] = DiceType.FourOfAKind;
+            Type[12] = DiceType.FullHouse;
+            Type[13] = DiceType.Yahtzee;
+            break;
           default:
             break;
         }
@@ -187,10 +200,10 @@ public class PointList extends JPanel{
 
   private int computeScore(int index){
     int[] DicePoint = new int[5];
-      for(int i = 0 ;i<DiceArray.DiceArray.length;i++){
-        DicePoint[i] = DiceArray.DiceArray[i].DICE_NUMBER;
-      }
-      Arrays.sort(DicePoint);
+    for(int i = 0 ;i<DiceArray.DiceArray.length;i++){
+      DicePoint[i] = DiceArray.DiceArray[i].DICE_NUMBER;
+    }
+    Arrays.sort(DicePoint);
     int score = 0;
     switch (index) {
       case 1:
@@ -252,6 +265,7 @@ public class PointList extends JPanel{
         for(int Point : DicePoint){
           score += Point;
         }
+        return score;
       case 12:
         score = 25;
         return score; 
@@ -263,8 +277,14 @@ public class PointList extends JPanel{
     }
   }
 
-  // private JLabel createJLabel(int Point){
-
-  //   return new JLabel(Point)
-  // }
+  private void setAction (JButton button,int index){
+    button.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e) {
+        button.setFocusable(false);
+        DiceGameApplication.App.requestFocus();
+        selectedType[index] = DiceType.values()[index];
+        setButton();
+      }
+    });
+  }
 }
