@@ -34,6 +34,11 @@ public class PointList extends JPanel{
   
   DiceType[] selectedType = new DiceType[DiceType.values().length];
 
+  int round = 0;
+
+  public int topPoint = 0;
+  public int bottonPoint = 0;
+  
   public PointList(){
     
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -44,8 +49,8 @@ public class PointList extends JPanel{
   public void createButton(){
     for (int i =0; i<DiceType.values().length ;i++) {
 
-        JButton button = new JButton("<html><p style='text-align: center'>"+DiceTypeToChinese(DiceType.values()[i])+"</p></html>");
-        button.setFont(new Font("微軟正黑體", Font.PLAIN, 23));
+        JButton button = new JButton();
+        button.setFont(new Font("微軟正黑體", Font.PLAIN, Setting.SCREEN_HEIGHT/60));
         button.setAlignmentX(CENTER_ALIGNMENT);
         button.setEnabled(false);
         setAction(button,i);
@@ -101,7 +106,7 @@ public class PointList extends JPanel{
             AllButton[i].setText("<html><p style='text-align: center'>"+DiceTypeToChinese(DiceType.values()[i])+"<br>將可獲得"+computeScore(i)+"點</p></html>");
           }else{
             AllButton[i].setEnabled(false);
-            AllButton[i].setText("<html><p style='text-align: center'>"+DiceTypeToChinese(DiceType.values()[i])+"</p></html>");
+            AllButton[i].setText("<html><p style='text-align: center'>"+DiceTypeToChinese(DiceType.values()[i])+"<br>"+orginalText(i)+"</p></html>");
           }
           if(selectedType[i]!=null){ 
             AllButton[i].setEnabled(false);
@@ -277,14 +282,60 @@ public class PointList extends JPanel{
     }
   }
 
+  private String orginalText(int index){
+    switch (index) {
+      case 0:
+        return "跳過本次回合";
+      case 1:
+        return "至少含有點數"+index;
+      case 2:
+        return "至少含有點數"+index;
+      case 3:
+        return "至少含有點數"+index;
+      case 4:
+        return "至少含有點數"+index;
+      case 5:
+        return "至少含有點數"+index;
+      case 6:
+        return "至少含有點數"+index;
+      case 7:
+        return "至少有三個同樣點數";
+      case 8:
+        return "至少有四個同樣點數";
+      case 9:
+        return "至少有四個點數連號";
+      case 10:
+        return "需五個點數連號";
+      case 11:
+        return "跳過本次回合";
+      case 12:
+        return "需二加三相同點數";
+      case 13:
+        return "需五個點數相同";
+      default:
+        return "無";
+    }
+  }
+
   private void setAction (JButton button,int index){
     button.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e) {
         button.setFocusable(false);
         DiceGameApplication.App.requestFocus();
         selectedType[index] = DiceType.values()[index];
+        DiceArray.clearAllSelected();
         setButton();
+        DiceGameApplication.App.repaint();
+        
+        round++;
+        if(round==13){
+          gameOver();
+        }
       }
     });
+  }
+
+  public void gameOver(){
+    
   }
 }

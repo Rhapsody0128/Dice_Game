@@ -40,23 +40,23 @@ public class Dice {
     DICE_POSITION_Y = Y;
   }
 
-  public void selectDice(){
+  public void putSelectDice(){
     if(selected){
       switch (DICE_INDEX) {
         case 0:
-          setPosition(Setting.SCREEN_WIDTH*3/8+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
+          setPosition(Setting.SCREEN_WIDTH*4/13+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
           break;
         case 1:
-          setPosition(Setting.SCREEN_WIDTH*3/8+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
+          setPosition(Setting.SCREEN_WIDTH*4/13+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
           break;
         case 2:
-          setPosition(Setting.SCREEN_WIDTH*3/8+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
+          setPosition(Setting.SCREEN_WIDTH*4/13+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
           break;
         case 3:
-          setPosition(Setting.SCREEN_WIDTH*3/8+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
+          setPosition(Setting.SCREEN_WIDTH*4/13+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
           break;
         case 4:
-          setPosition(Setting.SCREEN_WIDTH*3/8+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
+          setPosition(Setting.SCREEN_WIDTH*4/13+(Dice.DICE_SIZE+Dice.DICE_DOT_SIZE)*DICE_INDEX,Dice.DICE_SIZE);
           break;
       }
     }
@@ -70,36 +70,36 @@ public class Dice {
   public void drawDice(Graphics g) {
     switch (DICE_INDEX) {
       case 0:
-        setPosition(Setting.SCREEN_WIDTH/2-DICE_SIZE/8*5,Setting.SCREEN_HEIGHT/2);
-        selectDice();
+        setPosition(Setting.SCREEN_WIDTH*4/9-DICE_SIZE/8*5,Setting.SCREEN_HEIGHT/2);
+        putSelectDice();
         g.setColor(new Color(0, 0, 0));
         g.fillRect(DICE_POSITION_X, DICE_POSITION_Y, DICE_SIZE, DICE_SIZE);
         drawDot(g);
         break;
       case 1:
-        setPosition(Setting.SCREEN_WIDTH/2+DICE_SIZE/8*5,Setting.SCREEN_HEIGHT/2);
-        selectDice();
+        setPosition(Setting.SCREEN_WIDTH*4/9+DICE_SIZE/8*5,Setting.SCREEN_HEIGHT/2);
+        putSelectDice();
         g.setColor(new Color(50, 200, 200));
         g.fillRect(DICE_POSITION_X, DICE_POSITION_Y, DICE_SIZE, DICE_SIZE);
         drawDot(g);
         break;
       case 2:
-        setPosition(Setting.SCREEN_WIDTH/2-DICE_SIZE*5/4,Setting.SCREEN_HEIGHT/2+DICE_SIZE*5/4);
-        selectDice();
+        setPosition(Setting.SCREEN_WIDTH*4/9-DICE_SIZE*5/4,Setting.SCREEN_HEIGHT/2+DICE_SIZE*5/4);
+        putSelectDice();
         g.setColor(new Color(50, 50,200));
         g.fillRect(DICE_POSITION_X, DICE_POSITION_Y, DICE_SIZE, DICE_SIZE);
         drawDot(g);
         break;
       case 3:
-        setPosition(Setting.SCREEN_WIDTH/2,Setting.SCREEN_HEIGHT/2+DICE_SIZE*5/4);
-        selectDice();
+        setPosition(Setting.SCREEN_WIDTH*4/9,Setting.SCREEN_HEIGHT/2+DICE_SIZE*5/4);
+        putSelectDice();
         g.setColor(new Color(50, 180,50));
         g.fillRect(DICE_POSITION_X, DICE_POSITION_Y, DICE_SIZE, DICE_SIZE);
         drawDot(g);
         break;
       case 4:
-        setPosition(Setting.SCREEN_WIDTH/2+DICE_SIZE*5/4,Setting.SCREEN_HEIGHT/2+DICE_SIZE*5/4);
-        selectDice();
+        setPosition(Setting.SCREEN_WIDTH*4/9+DICE_SIZE*5/4,Setting.SCREEN_HEIGHT/2+DICE_SIZE*5/4);
+        putSelectDice();
         g.setColor(new Color(200, 200, 20));
         g.fillRect(DICE_POSITION_X, DICE_POSITION_Y, DICE_SIZE, DICE_SIZE);
         drawDot(g);

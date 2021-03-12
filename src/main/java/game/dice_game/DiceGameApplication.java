@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 import java.awt.BorderLayout;
 
@@ -19,27 +19,40 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
 
 	private static final long serialVersionUID = 1L;
 
-	DiceArray diceArray = new DiceArray();
+	public static JPanel checkPlanel = new JPanel();
 
-	PointList PointList = new PointList();
+	public static DiceArray diceArray = new DiceArray();
+	
+	public static PointList PointList = new PointList();
+	
+	public static JTextField[] TextField = new JTextField[4];
+	
+	public static String[] PlayersName = new String[4];
 
 	static DiceGameApplication App = new DiceGameApplication();
 
 	PointList PointListz = new PointList();
+	ScoreList ScoreListz = new ScoreList();
 
 	public DiceGameApplication() {
 		setTitle("骰子遊戲");
 		setSize(Setting.SCREEN_WIDTH, Setting.SCREEN_HEIGHT);
 		setResizable(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
+		// setLocationRelativeTo(null);
+		// setUndecorated(true);
 		
+		setPlayerList();
+		setCheckPanel(); 
+		checkPlanel.add(new JButton("asd"));
+		add(checkPlanel,BorderLayout.LINE_START);
+
 		add(PointListz,BorderLayout.LINE_START);
+		add(ScoreListz,BorderLayout.LINE_END);
 		
 		addKeyListener(this);
 
 	}
-
 		public void paint(Graphics g) { 
 			super.paint(g);
 			DiceArray.drawDiceBox(g);
@@ -53,6 +66,61 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
 			SpringApplication.run(DiceGameApplication.class, args);
 			App.setFocusable(true);
 			App.setVisible(true);
+		}
+
+		private void setCheckPanel(){
+			JComboBox<Number> jComboBox = new JComboBox<Number>();
+        jComboBox.addItem(1);
+        jComboBox.addItem(2);
+        jComboBox.addItem(3);
+        jComboBox.addItem(4);
+        jComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int playersCount = (int) jComboBox.getSelectedItem();
+                switch (playersCount) {
+                    case 1:
+                        setNameTextField(1);
+                        break;
+                    case 2:
+											setNameTextField(2);
+                        break;
+                    case 3:
+											setNameTextField(3);
+                        break;
+                    case 4:
+											setNameTextField(4);
+                        break;
+                }
+            }
+        });
+
+        checkPlanel.add(jComboBox);
+		}
+
+		private void setNameTextField(int playerCount){
+			JButton jButton = new JButton("確認");
+			for(int i = 0 ;i<playerCount;i++){
+				TextField[i].setVisible(true);
+			}
+			jButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					for(int i = 0 ;i<playerCount;i++){
+						PlayersName[i] = TextField[i].getText();
+					}
+				}
+			});
+			checkPlanel.add(jButton);
+		}
+
+
+		public void setPlayerList(){
+			for(int i = 0 ;i<4;i++){
+				TextField[i] = new JTextField();
+				TextField[i].setVisible(false);
+				checkPlanel.add(TextField[i]);
+			}
 		}
 
 	@Override
