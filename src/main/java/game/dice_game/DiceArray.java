@@ -83,7 +83,6 @@ public class DiceArray {
         },0,50);
       } else{
         chance--;
-        System.out.println(chance);
         Timer.cancel();
       }
     }

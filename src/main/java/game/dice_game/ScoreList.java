@@ -23,6 +23,7 @@ public class ScoreList extends JPanel{
 
   JLabel content = new JLabel();
 
+
   String[] players = new String[4];
   
   public ScoreList(){

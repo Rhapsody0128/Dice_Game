@@ -34,29 +34,32 @@ public class PointList extends JPanel{
   
   DiceType[] selectedType = new DiceType[DiceType.values().length];
 
+  int index;
+
   int round = 0;
 
   public int topPoint = 0;
   public int bottonPoint = 0;
   
-  public PointList(){
-    
+  public PointList(int getIndex){
+    index = getIndex;
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     createButton();
     setButton();
   }
   
   public void createButton(){
-    for (int i =0; i<DiceType.values().length ;i++) {
-
-        JButton button = new JButton();
-        button.setFont(new Font("微軟正黑體", Font.PLAIN, Setting.SCREEN_HEIGHT/60));
-        button.setAlignmentX(CENTER_ALIGNMENT);
-        button.setEnabled(false);
-        setAction(button,i);
-
-        this.add(button);
-        AllButton[i] = button;
+    JLabel name = new JLabel(DiceGameApplication.getName(index));
+    name.setFont(new Font("微軟正黑體", Font.PLAIN, Setting.SCREEN_HEIGHT/40));
+    this.add(name);
+    for(int i =0; i<DiceType.values().length ;i++) {
+      JButton button = new JButton();
+      button.setFont(new Font("微軟正黑體", Font.PLAIN, Setting.SCREEN_HEIGHT/60));
+      button.setAlignmentX(CENTER_ALIGNMENT);
+      button.setEnabled(false);
+      setAction(button,i);
+      this.add(button);
+      AllButton[i] = button;
     }
     setButton();
   }
@@ -96,6 +99,8 @@ public class PointList extends JPanel{
   }
 
   public void setButton(){
+      
+      
       for(int i = 0; i<DiceType.values().length ;i++){
         if(i==0){
           AllButton[i].setEnabled(true);
@@ -198,7 +203,6 @@ public class PointList extends JPanel{
       }
       return Type;
     } catch(Exception e) { 
-      System.out.println(e);
       return Type;
     }
   }
@@ -325,7 +329,9 @@ public class PointList extends JPanel{
         selectedType[index] = DiceType.values()[index];
         DiceArray.clearAllSelected();
         setButton();
+        
         DiceGameApplication.App.repaint();
+        DiceGameApplication.App.nextPlayer(index);;
         
         round++;
         if(round==13){
@@ -334,7 +340,6 @@ public class PointList extends JPanel{
       }
     });
   }
-
   public void gameOver(){
     
   }
