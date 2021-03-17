@@ -24,41 +24,37 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
 
 	public JPanel checkPanel = new JPanel(new GridLayout(11, 1));
 
-
 	public DiceArray diceArray = new DiceArray();
 
 	public JPanel PointPanel = new JPanel();
 	
-	public PointList[] pointList = new PointList[4];
+	public PointList[] pointList;
 
 	Boolean Start = false;
-	
-	public ScoreList ScoreList = new ScoreList();
 
-	public int playerCount = 0;
+	public static Boolean roundStart = false;
+
+	public int playerCount;
 
 	public int nowPlaying = 0;
 
 	static DiceGameApplication App = new DiceGameApplication();
 
-	public static String[] name ;
+	public String[] name ;
 	// PointList PointListz = new PointList();
 	// ScoreList ScoreListz = new ScoreList();
 
 	public DiceGameApplication() {
 		setTitle("骰子遊戲");
 		setSize(Setting.SCREEN_WIDTH, Setting.SCREEN_HEIGHT);
-		setResizable(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
 		setLocationRelativeTo(null);
 		// setUndecorated(true);
 		
 		setInit();
 
 		add(checkPanel);
-		// add(new JButton("aa"),BorderLayout.LINE_START);
-		
-		
 
 		addKeyListener(this);
 
@@ -70,7 +66,6 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
 				for(int i = 0 ; i<DiceArray.DiceArray.length ; i++){
 					DiceArray.DiceArray[i].drawDice(g);
 				}
-				pointList[nowPlaying].setButton();
 			}
 
 		}
@@ -88,11 +83,11 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
         jComboBox.addItem(2);
         jComboBox.addItem(3);
         jComboBox.addItem(4);
+        jComboBox.addItem(5);
         jComboBox.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             int choicPlayCount = (int) jComboBox.getSelectedItem();
-						// App.requestFocus();
 						checkPanel.repaint();
 						for(int i = 2 ; i< playerCount+3 ;i++){
 							checkPanel.remove(2);
@@ -142,7 +137,6 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
 
 			checkPanel.validate();
 
-			// App.setFocusable(true);
 		}
 
 		public void setInit(){
@@ -156,7 +150,7 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
 		}
 		
 		private void setScoreList(){
-			App.add(ScoreList,BorderLayout.LINE_END);
+			App.add(new ScoreList(),BorderLayout.LINE_END);
 		};
 		
 		private void setPointList(){
@@ -169,17 +163,55 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
 		}
 		
 		public void nextPlayer(int now){
+			
+			roundStart = false;
+			pointList[nowPlaying].setButton();
 			PointPanel.removeAll();
 			nowPlaying+=1;
 			if(nowPlaying>=playerCount){
 				nowPlaying = 0;
+				PointList.round++;
+				if(PointList.round==13){
+					gameOver();
+				}
 			}
 			PointPanel.add(pointList[nowPlaying]);
+			ScoreList.select(nowPlaying+1);
+			ScoreList.setTopPanel(getName(nowPlaying),DiceArray.chance,PointList.round);
 			PointPanel.validate();
 		}
 
-		public static String getName(int index){
+		public String getName(int index){
 			return name[index];
+		}
+
+		private void gameOver(){
+			JFrame gameOverFrame = new JFrame();
+			JPanel gameOverPanel = new JPanel(new GridLayout(playerCount+2, 1));
+			gameOverFrame.setTitle("總分統計");
+			gameOverFrame.setSize(Setting.SCREEN_WIDTH, Setting.SCREEN_HEIGHT);
+			gameOverFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			int bestPlayerIndex = -1;
+			int bestScore = 0;
+			for(int i = 0 ;i<playerCount;i++){
+				if(pointList[i].finalScore()>bestScore){
+					bestScore = pointList[i].finalScore();
+					bestPlayerIndex = i;
+				}
+			}
+			for(int i = 0 ;i<playerCount;i++){
+				JLabel JLabel = new JLabel();
+				JLabel.setFont(new Font("微軟正黑體", Font.PLAIN, Setting.SCREEN_HEIGHT/20));
+				JLabel.setText(getName(i) +  ": 獲得的總分為" + pointList[i].finalScore() + "分");
+				gameOverPanel.add(JLabel);
+			}
+			JLabel jLabel = new JLabel("恭喜"+getName(bestPlayerIndex)+"獲得最優異成績"+bestScore+"分!!");
+			jLabel.setFont(new Font("微軟正黑體", Font.PLAIN, Setting.SCREEN_HEIGHT/10));
+			gameOverPanel.add(jLabel);
+
+			gameOverFrame.add(gameOverPanel);
+			gameOverFrame.setVisible(true);
+			App.setVisible(false);
 		}
 
 	@Override
@@ -219,11 +251,14 @@ public class DiceGameApplication extends JFrame implements KeyListener, ActionLi
 				break;
 			case KeyEvent.VK_SPACE:
 				DiceArray.rollRemainDice();
+				roundStart = true;
+				pointList[nowPlaying].setButton();
 				break;
 			default:
 				break;
 		}
 		repaint();
+		
 	}
 
 	@Override

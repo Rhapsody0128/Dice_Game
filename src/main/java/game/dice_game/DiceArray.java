@@ -13,7 +13,7 @@ public class DiceArray {
   
   public static Dice[] SelectedDice = new Dice[5];
 
-  private static Boolean rolling = false;
+  public static Boolean rolling = false;
 
   private static Timer Timer = new Timer();
 
@@ -38,7 +38,7 @@ public class DiceArray {
   };
 
   public static void selectedDice(int index){
-    if(rolling==false){
+    if(rolling==false && DiceGameApplication.roundStart == true){
       SelectedDice[index] = DiceArray[index] ;
       DiceArray[index].selected = true;
       DiceArray[index].putSelectDice();
@@ -46,7 +46,7 @@ public class DiceArray {
   }
 
   public static void cancelSelectedDice(int index){
-    if(rolling==false){
+    if(rolling==false && DiceGameApplication.roundStart == true){
       SelectedDice[index] = null;
       DiceArray[index].selected = false;
       DiceArray[index].putSelectDice();
@@ -60,7 +60,6 @@ public class DiceArray {
       DiceArray[i].putSelectDice();
     }
     chanceReset();
-    rollRemainDice();
   }
   public static void chanceReset(){
     chance = 3;
@@ -83,6 +82,7 @@ public class DiceArray {
         },0,50);
       } else{
         chance--;
+        ScoreList.setTopPanel(DiceGameApplication.App.getName(DiceGameApplication.App.nowPlaying),chance,PointList.round);
         Timer.cancel();
       }
     }
